@@ -243,6 +243,65 @@ git push -u origin main
 git remote -v
 ```
 
+## 当前工程化状态
+
+项目已经具备开始功能开发所需的基础工程化能力：
+
+- **版本管理**：Git 本地仓库，已配置远程仓库 `origin`。
+- **依赖管理**：使用 npm，依赖版本由 `package-lock.json` 锁定。
+- **运行时约束**：通过 `.nvmrc` 和 `package.json` 的 `engines` 统一 Node.js 20。
+- **代码规范**：通过 `.editorconfig` 统一编码、换行、缩进和空格规则。
+- **代码质量**：通过 ESLint 和 TypeScript 分别进行代码规范检查和类型检查。
+- **自动校验**：GitHub Actions 在推送或 Pull Request 到 `main` 时自动执行检查和 H5 构建。
+- **构建验证**：Taro 已配置 H5、微信小程序及其他端的开发和构建脚本。
+- **内容与逻辑分离**：事件内容集中在 `src/data/events.ts`，游戏规则集中在 `src/services/game.ts`，页面主要负责展示和交互。
+- **本地数据**：游戏记录通过 Taro Storage 保存，当前不依赖后端服务。
+
+因此，后续可以直接进入功能开发。新增功能时，应优先遵循现有分层，避免把游戏规则、页面展示和配置内容重新混在一起。
+
+## 推荐开发流程
+
+开始一个功能前：
+
+```powershell
+git pull
+npm ci
+```
+
+开发过程中：
+
+```powershell
+npm run dev:h5
+```
+
+提交前：
+
+```powershell
+npm run validate
+git status
+git add <相关文件>
+git commit -m "feat: 描述本次功能"
+git push
+```
+
+如果只修改了文案或配置，也建议至少执行：
+
+```powershell
+npm run check
+```
+
+## 后续可选增强
+
+以下内容不是当前开发的前置条件，可以根据项目规模再逐步增加：
+
+- **单元测试**：为 `src/services/game.ts`、`src/services/records.ts` 等纯业务逻辑增加测试。
+- **端到端测试**：模拟完整游戏流程，验证页面交互和关键结算结果。
+- **代码格式化**：引入 Prettier，并与 ESLint、EditorConfig 统一规则。
+- **提交钩子**：使用 Husky + lint-staged，在提交前自动执行检查。
+- **发布流程**：配置正式环境构建、版本号管理和自动发布。
+- **依赖安全治理**：定期审查 `npm audit` 结果，评估升级风险后再更新依赖。
+- **远程数据服务**：如果需要跨设备同步，再接入云函数或后端服务。
+
 ## 依赖和构建注意事项
 
 - `package-lock.json` 应提交到 Git。
