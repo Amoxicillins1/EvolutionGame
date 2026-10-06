@@ -1,0 +1,60 @@
+@use '@/styles/variables.scss' as *;
+
+.page { min-height: 100vh; padding: 32rpx; padding-bottom: 48rpx; }
+.header { display: flex; align-items: flex-end; justify-content: space-between; gap: 24rpx; margin-bottom: 32rpx; }
+.eyebrow { display: block; color: $color-primary; font-size: 22rpx; font-weight: $font-weight-bold; letter-spacing: 3rpx; }
+.title { display: block; margin-top: 8rpx; font-family: Georgia, 'PingFang SC', serif; font-size: 56rpx; line-height: 1.2; letter-spacing: 1rpx; }
+.subtitle { display: block; margin-top: 8rpx; color: $color-text-tertiary; font-size: 24rpx; line-height: 1.6; }
+.lineage { max-width: 160rpx; color: $color-text-tertiary; font-size: 22rpx; text-align: right; }
+.sceneCard, .sideCard, .resultCard { overflow: hidden; background: $color-bg-card; border: 1rpx solid $color-border; border-radius: $radius-md; box-shadow: $shadow-card; }
+.sceneArt { min-height: 220rpx; padding: 32rpx; display: flex; flex-direction: column; justify-content: flex-end; background: linear-gradient(145deg, #155c64 0%, #187a78 54%, #8ab49d 100%); }
+.sceneSmall { color: rgba(255, 255, 255, .72); font-size: 22rpx; }
+.sceneMood { display: block; margin-top: 10rpx; color: $color-text-white; font-size: 34rpx; font-weight: $font-weight-semibold; line-height: 1.4; }
+.eventBody { padding: 32rpx; }
+.eventCount { color: $color-primary; font-size: 22rpx; font-weight: $font-weight-bold; }
+.eventTitle { display: block; margin-top: 16rpx; font-size: 38rpx; font-weight: $font-weight-semibold; line-height: 1.4; }
+.eventText { display: block; margin-top: 16rpx; color: $color-text-secondary; font-size: 28rpx; line-height: 1.7; }
+.choices { margin-top: 32rpx; }
+.choice { @include button-reset; width: 100%; min-height: 96rpx; margin-top: 16rpx; padding: 20rpx 24rpx; justify-content: flex-start; gap: 20rpx; background: #f7f5ec; border: 1rpx solid $color-border; border-radius: $radius-sm; color: $color-text-primary; transition: all $transition-fast; }
+.choice:first-child { margin-top: 0; }
+.choice:active { background: $color-bg-hover; transform: scale(.985); }
+.choiceNumber { width: 44rpx; height: 44rpx; flex: 0 0 44rpx; display: flex; align-items: center; justify-content: center; color: $color-primary; background: #dcece3; border-radius: $radius-round; font-size: 24rpx; font-weight: $font-weight-bold; }
+.choiceCopy { min-width: 0; flex: 1; text-align: left; }
+.choiceLabel, .choiceHint { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.choiceLabel { font-size: 28rpx; font-weight: $font-weight-semibold; }
+.choiceHint { margin-top: 6rpx; color: $color-text-tertiary; font-size: 22rpx; }
+.choiceArrow { color: $color-primary; font-size: 40rpx; line-height: 1; }
+.healthRow { display: flex; align-items: center; justify-content: space-between; gap: 24rpx; margin-top: 32rpx; padding-top: 24rpx; border-top: 1rpx solid $color-divider; }
+.healthLabel { color: $color-text-tertiary; font-size: 24rpx; }
+.health { display: flex; gap: 12rpx; }
+.heart, .heartEmpty { width: 28rpx; height: 28rpx; background: $color-coral; clip-path: polygon(50% 91%, 9% 47%, 9% 26%, 19% 10%, 35% 8%, 50% 22%, 65% 8%, 81% 10%, 91% 26%, 91% 47%); }
+.heartEmpty { opacity: .2; }
+.sideCard { margin-top: 24rpx; padding: 32rpx; }
+.cardTitle { display: block; font-size: 32rpx; font-weight: $font-weight-semibold; }
+.cardIntro { display: block; margin-top: 10rpx; color: $color-text-tertiary; font-size: 24rpx; line-height: 1.7; }
+.statList { display: grid; gap: 24rpx; margin-top: 32rpx; }
+.statHead { display: flex; justify-content: space-between; margin-bottom: 10rpx; font-size: 24rpx; }
+.statValue { color: $color-primary; font-weight: $font-weight-bold; }
+.bar { height: 12rpx; overflow: hidden; background: #e7ebe0; border-radius: $radius-round; }
+.barFill { height: 100%; background: $color-primary; border-radius: inherit; transition: width $transition-base; }
+.traitNote { display: block; margin-top: 32rpx; padding: 20rpx; color: #6c614a; background: #f7efd8; border-left: 6rpx solid $color-gold; font-size: 24rpx; line-height: 1.6; }
+.memory { margin-top: 32rpx; padding-top: 24rpx; border-top: 1rpx solid $color-divider; }
+.memoryTitle, .memoryText { display: block; }
+.memoryTitle { font-size: 24rpx; font-weight: $font-weight-semibold; }
+.memoryText { margin-top: 8rpx; color: $color-text-tertiary; font-size: 24rpx; line-height: 1.6; }
+.resultCard { padding: 48rpx 32rpx; text-align: center; }
+.resultMark, .resultMarkDanger { width: 128rpx; height: 128rpx; margin: 0 auto 24rpx; display: flex; align-items: center; justify-content: center; border: 1rpx solid #c9ded6; border-radius: $radius-round; color: $color-primary; background: #e7f1e9; font-size: 64rpx; }
+.resultMarkDanger { color: $color-error; background: #f8e8e1; border-color: #e6beb1; }
+.resultTitle { display: block; margin-top: 16rpx; font-family: Georgia, 'PingFang SC', serif; font-size: 42rpx; line-height: 1.35; }
+.resultLead { display: block; margin-top: 16rpx; color: $color-text-tertiary; font-size: 26rpx; line-height: 1.7; }
+.reasonBox { margin: 32rpx 0; padding: 24rpx; text-align: left; background: #f8f5e9; border: 1rpx solid #e6dfc9; border-radius: $radius-sm; }
+.reasonLabel { display: block; color: $color-primary-dark; font-size: 26rpx; font-weight: $font-weight-semibold; }
+.reason { display: block; margin-top: 12rpx; color: $color-text-secondary; font-size: 26rpx; line-height: 1.7; }
+.resultStats { display: flex; gap: 16rpx; margin-top: 24rpx; }
+.resultStat { flex: 1; padding: 16rpx 8rpx; text-align: center; background: rgba(255, 255, 255, .6); }
+.resultNumber, .resultStatLabel { display: block; }
+.resultNumber { color: $color-primary; font-size: 36rpx; font-weight: $font-weight-bold; }
+.resultStatLabel { margin-top: 4rpx; color: $color-text-tertiary; font-size: 22rpx; }
+.primaryButton { @include button-reset; width: 100%; height: $button-height-lg; background: $color-primary; border: 0; border-radius: $radius-button; color: $color-text-white; font-size: 30rpx; font-weight: $font-weight-semibold; }
+.primaryButton:active { opacity: .9; transform: scale(.98); }
+@media (min-width: 700px) { .page { max-width: 686rpx; margin: 0 auto; } }

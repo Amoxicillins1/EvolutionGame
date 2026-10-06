@@ -1,0 +1,16 @@
+@use '@/styles/variables.scss' as *;
+
+.page { min-height: 100vh; padding: 32rpx; }
+.header { margin-bottom: 32rpx; }
+.eyebrow { display: block; color: $color-primary; font-size: 22rpx; font-weight: $font-weight-bold; letter-spacing: 3rpx; }
+.title { display: block; margin-top: 8rpx; font-family: Georgia, 'PingFang SC', serif; font-size: 56rpx; line-height: 1.2; }
+.subtitle { display: block; margin-top: 8rpx; color: $color-text-tertiary; font-size: 24rpx; line-height: 1.6; }
+.card { padding: 32rpx; background: $color-bg-card; border: 1rpx solid $color-border; border-radius: $radius-md; box-shadow: $shadow-card; }
+.cardTitle { display: block; font-size: 32rpx; font-weight: $font-weight-semibold; }
+.cardText { display: block; margin-top: 12rpx; color: $color-text-secondary; font-size: 26rpx; line-height: 1.7; }
+.dangerButton { @include button-reset; width: 100%; height: $button-height-md; margin-top: 32rpx; background: #f8e8e1; border: 1rpx solid #e6beb1; border-radius: $radius-button; color: $color-error; font-size: 28rpx; }
+.dangerButton:active { opacity: .85; transform: scale(.98); }
+.about { margin-top: 48rpx; padding: 32rpx 0; text-align: center; border-top: 1rpx solid $color-divider; }
+.aboutTitle, .aboutText { display: block; }
+.aboutTitle { font-size: 26rpx; font-weight: $font-weight-semibold; }
+.aboutText { margin-top: 8rpx; color: $color-text-tertiary; font-size: 22rpx; }

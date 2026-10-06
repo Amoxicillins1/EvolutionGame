@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>潮汐之前：进化生存 MVP</title>
+  <style>
+    :root {
+      --ink: #18313b;
+      --muted: #6d8588;
+      --paper: #f6f2e9;
+      --panel: #fffdf8;
+      --line: #d9dfd2;
+      --teal: #187a78;
+      --teal-dark: #105b61;
+      --coral: #dc765b;
+      --gold: #d7a649;
+      --danger: #bd5145;
+      --shadow: 0 18px 45px rgba(25, 54, 54, .12);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background: radial-gradient(circle at top left, #dbe8dd 0, transparent 33%), var(--paper);
+      font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+    }
+    button { font: inherit; }
+    .app { width: min(1120px, calc(100% - 32px)); margin: 0 auto; padding: 28px 0 42px; }
+    header { display: flex; align-items: end; justify-content: space-between; gap: 20px; margin-bottom: 22px; }
+    .eyebrow { color: var(--teal); font-size: 12px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
+    h1, h2, p { margin: 0; }
+    h1 { margin-top: 7px; font-family: Georgia, "Microsoft YaHei", serif; font-size: clamp(30px, 5vw, 54px); letter-spacing: .02em; }
+    .subtitle { margin-top: 7px; color: var(--muted); font-size: 14px; }
+    .run-label { color: var(--muted); font-size: 13px; text-align: right; }
+    .run-label strong { display: block; margin-top: 3px; color: var(--ink); font-size: 16px; }
+    .layout { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(280px, .75fr); gap: 20px; align-items: start; }
+    .panel { background: rgba(255, 253, 248, .92); border: 1px solid rgba(217, 223, 210, .85); border-radius: 8px; box-shadow: var(--shadow); }
+    .scene { min-height: 580px; overflow: hidden; }
+    .scene-art { position: relative; min-height: 220px; padding: 26px; display: flex; align-items: end; background: linear-gradient(160deg, #86b6aa 0%, #2e7c82 47%, #123f55 100%); color: white; isolation: isolate; }
+    .scene-art::before, .scene-art::after { content: ""; position: absolute; border-radius: 50%; border: 1px solid rgba(255,255,255,.18); }
+    .scene-art::before { width: 330px; height: 330px; right: -76px; top: -120px; box-shadow: 0 0 0 24px rgba(255,255,255,.05), 0 0 0 48px rgba(255,255,255,.04); }
+    .scene-art::after { width: 150px; height: 150px; left: 20%; top: 24%; background: rgba(255,255,255,.08); }
+    .art-copy { position: relative; z-index: 1; max-width: 520px; }
+    .art-copy small { display: block; margin-bottom: 9px; color: #d5ece4; font-size: 12px; letter-spacing: .12em; }
+    .art-copy strong { font-family: Georgia, serif; font-size: clamp(29px, 4vw, 46px); font-weight: 400; }
+    .content { padding: 28px; }
+    .event-kicker { color: var(--coral); font-size: 13px; font-weight: 800; }
+    .event-title { margin-top: 8px; font-size: clamp(22px, 3vw, 30px); line-height: 1.3; }
+    .event-text { margin-top: 14px; color: #587073; font-size: 16px; line-height: 1.8; }
+    .choices { display: grid; gap: 11px; margin-top: 25px; }
+    .choice { display: grid; grid-template-columns: 38px 1fr auto; align-items: center; gap: 13px; width: 100%; padding: 15px 16px; color: var(--ink); text-align: left; background: #fbfaf3; border: 1px solid var(--line); border-radius: 6px; cursor: pointer; transition: .18s ease; }
+    .choice:hover { border-color: var(--teal); transform: translateY(-2px); box-shadow: 0 8px 18px rgba(24, 122, 120, .12); }
+    .choice:focus-visible, .primary:focus-visible, .ghost:focus-visible { outline: 3px solid rgba(215,166,73,.55); outline-offset: 2px; }
+    .choice-number { display: grid; place-items: center; width: 30px; height: 30px; color: white; background: var(--teal); border-radius: 50%; font-weight: 800; }
+    .choice strong { font-size: 15px; }
+    .choice small { display: block; margin-top: 4px; color: var(--muted); line-height: 1.45; }
+    .choice-arrow { color: var(--teal); font-size: 20px; }
+    .status { display: flex; justify-content: space-between; align-items: center; gap: 14px; margin-top: 25px; padding-top: 18px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
+    .health { display: flex; gap: 5px; }
+    .heart { width: 17px; height: 17px; background: var(--coral); clip-path: polygon(50% 91%, 9% 47%, 9% 26%, 19% 10%, 35% 8%, 50% 22%, 65% 8%, 81% 10%, 91% 26%, 91% 47%); }
+    .heart.empty { opacity: .2; }
+    .sidebar { padding: 24px; }
+    .sidebar h2 { font-size: 18px; }
+    .sidebar-intro { margin-top: 7px; color: var(--muted); font-size: 13px; line-height: 1.6; }
+    .stat-list { display: grid; gap: 17px; margin-top: 24px; }
+    .stat-head { display: flex; justify-content: space-between; margin-bottom: 7px; font-size: 13px; }
+    .stat-head span:last-child { color: var(--teal); font-weight: 800; }
+    .bar { height: 8px; overflow: hidden; background: #e7ebe0; border-radius: 20px; }
+    .bar i { display: block; height: 100%; background: var(--teal); border-radius: inherit; transition: width .3s ease; }
+    .trait-note { margin-top: 23px; padding: 13px; color: #6c614a; background: #f7efd8; border-left: 3px solid var(--gold); font-size: 12px; line-height: 1.6; }
+    .memory { margin-top: 24px; padding-top: 19px; border-top: 1px solid var(--line); }
+    .memory h3 { font-size: 13px; }
+    .memory p { margin-top: 6px; color: var(--muted); font-size: 12px; line-height: 1.6; }
+    .result { padding: 36px 28px; text-align: center; }
+    .result-mark { display: grid; place-items: center; width: 76px; height: 76px; margin: 0 auto 18px; border: 1px solid #c9ded6; border-radius: 50%; color: var(--teal); background: #e7f1e9; font-size: 34px; }
+    .result h2 { font-family: Georgia, serif; font-size: 34px; font-weight: 400; }
+    .result-lead { max-width: 520px; margin: 13px auto 0; color: var(--muted); line-height: 1.8; }
+    .result-box { max-width: 560px; margin: 24px auto; padding: 18px; text-align: left; background: #f8f5e9; border: 1px solid #e6dfc9; border-radius: 6px; }
+    .result-box strong { color: var(--teal-dark); }
+    .result-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; margin-top: 16px; }
+    .result-stat { padding: 11px 6px; text-align: center; background: white; border-radius: 4px; }
+    .result-stat b { display: block; color: var(--teal); font-size: 20px; }
+    .result-stat small { color: var(--muted); font-size: 11px; }
+    .primary, .ghost { min-height: 44px; padding: 0 20px; border-radius: 5px; cursor: pointer; font-weight: 800; }
+    .primary { color: white; background: var(--teal); border: 1px solid var(--teal); }
+    .primary:hover { background: var(--teal-dark); }
+    .ghost { color: var(--teal-dark); background: transparent; border: 1px solid #a9c5bc; }
+    .result-actions { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+    .hidden { display: none !important; }
+    @media (max-width: 760px) {
+      .app { width: min(100% - 20px, 600px); padding-top: 18px; }
+      header { align-items: start; }
+      .run-label { display: none; }
+      .layout { grid-template-columns: 1fr; }
+      .scene { min-height: 0; }
+      .scene-art { min-height: 190px; }
+      .content { padding: 22px 18px; }
+      .sidebar { order: -1; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header>
+      <div>
+        <div class="eyebrow">Evolution survival / MVP 01</div>
+        <h1>潮汐之前</h1>
+        <p class="subtitle">在成为某种生物之前，先学会活下去。</p>
+      </div>
+      <div class="run-label">当前谱系<strong id="lineageLabel">单细胞生命</strong></div>
+    </header>
+
+    <section id="gameView" class="layout">
+      <article class="panel scene">
+        <div class="scene-art"><div class="art-copy"><small>远古海洋 · 约 5 亿年前</small><strong id="sceneMood">潮水带来新的气味。</strong></div></div>
+        <div class="content">
+          <div class="event-kicker" id="eventCount">事件 1 / 5</div>
+          <h2 class="event-title" id="eventTitle"></h2>
+          <p class="event-text" id="eventText"></p>
+          <div class="choices" id="choices"></div>
+          <div class="status"><span>种群活力</span><div class="health" id="health" aria-label="种群活力"></div></div>
+        </div>
+      </article>
+
+      <aside class="panel sidebar">
+        <h2>正在形成的倾向</h2>
+        <p class="sidebar-intro">你没有直接选择物种。连续的生存策略，会慢慢改变种群的方向。</p>
+        <div class="stat-list">
+          <div><div class="stat-head"><span>力量</span><span id="strengthValue">0</span></div><div class="bar"><i id="strengthBar" style="width: 5%"></i></div></div>
+          <div><div class="stat-head"><span>感知</span><span id="perceptionValue">0</span></div><div class="bar"><i id="perceptionBar" style="width: 5%"></i></div></div>
+          <div><div class="stat-head"><span>适应性</span><span id="adaptabilityValue">0</span></div><div class="bar"><i id="adaptabilityBar" style="width: 5%"></i></div></div>
+        </div>
+        <div class="trait-note" id="traitNote">目前还没有明显倾向。每一次选择都会留下痕迹。</div>
+        <div class="memory"><h3>本局记忆</h3><p id="memoryText">这是你的第一次尝试。先活下来，再看看会变成什么。</p></div>
+      </aside>
+    </section>
+
+    <section id="resultView" class="panel result hidden">
+      <div class="result-mark" id="resultMark">◌</div>
+      <div class="eyebrow">进化结算</div>
+      <h2 id="resultTitle"></h2>
+      <p class="result-lead" id="resultLead"></p>
+      <div class="result-box"><strong>为什么是它？</strong><p id="resultReason" style="margin-top:8px;color:#6d8588;line-height:1.7"></p><div class="result-stats" id="resultStats"></div></div>
+      <div class="result-actions"><button class="primary" id="restartButton">重新尝试</button><button class="ghost" id="backButton">查看本局数据</button></div>
+    </section>
+  </main>
+
+  <script>
+    const events = [
+      { title: "水流卷来一片锋利的碎壳。", text: "周围没有可以立刻躲藏的地方。碎壳在水中旋转，像一群没有眼睛的捕食者。", mood: "水流正在变快。", choices: [
+        { label: "正面顶住水流", hint: "用身体的力量撑过去", result: "你被碎壳划伤，但种群记住了水流的方向。", hp: -1, stats: { strength: 2 }, memory: "正面承受危险，让力量倾向开始显现。" },
+        { label: "观察水流的间隙", hint: "等待最安全的时机穿过", result: "你避开了大部分碎壳，发现了规律。", hp: 0, stats: { perception: 2 }, memory: "等待和观察，让感知倾向开始显现。" }
+      ]},
+      { title: "一团绿色微生物沉在浅水处。", text: "它可能是食物，也可能让你变得虚弱。更深的水域里，还有另一种气味。", mood: "饥饿比恐惧更早到来。", choices: [
+        { label: "吞食眼前的微生物", hint: "立刻获得能量，但可能有风险", result: "你获得了能量，也适应了陌生的成分。", hp: 0, stats: { adaptability: 2 }, memory: "接纳陌生食物，让适应性倾向增强。" },
+        { label: "追踪更深处的气味", hint: "离开安全区域寻找更好的食物", result: "你找到丰富的食物，但被暗流拖得很远。", hp: -1, stats: { strength: 1, adaptability: 1 }, memory: "远离熟悉环境，让力量与适应性共同增长。" }
+      ]},
+      { title: "巨大的阴影从上方掠过。", text: "捕食者还没有发现你。珊瑚缝隙只能容纳一小群生命，离开则会暴露在开阔水域。", mood: "不要让影子看见你。", choices: [
+        { label: "躲进珊瑚缝隙", hint: "安全，但会错过一部分食物", result: "阴影离开了。你记住了隐蔽处的位置。", hp: 0, stats: { perception: 2 }, memory: "依靠感知和隐蔽活下来，敏捷路线变得清晰。" },
+        { label: "趁阴影转身时逃跑", hint: "快速离开，但更容易受伤", result: "你逃过了追捕，几名同伴却掉队了。", hp: -1, stats: { strength: 2 }, memory: "速度和爆发力救了你，力量路线变得清晰。" }
+      ]},
+      { title: "海水突然变得浑浊而温暖。", text: "熟悉的盐度正在改变。你可以留在原地等待，也可以尝试进入旁边的淡水潮池。", mood: "环境不会一直保持原样。", choices: [
+        { label: "进入淡水潮池", hint: "承受变化，寻找新的生存方式", result: "你的身体逐渐适应了不同的水质。", hp: 0, stats: { adaptability: 2 }, memory: "主动适应环境变化，广适应路线正在成形。" },
+        { label: "留在熟悉的海水里", hint: "暂时安全，但变化可能越来越大", result: "你暂时躲过了变化，却消耗了更多能量。", hp: -1, stats: { perception: 1, strength: 1 }, memory: "谨慎留守让你活下来，但环境正在逼你改变。" }
+      ]},
+      { title: "最后一片食物被发现了。", text: "种群已经疲惫。你可以独自吞下它，也可以让几名同伴一起分享，然后面对接下来的黑暗。", mood: "活下去，还是一起活下去？", choices: [
+        { label: "独自吞下食物", hint: "立刻恢复一点活力", result: "你恢复了活力，但种群之间的联系变弱了。", hp: 1, stats: { strength: 1 }, memory: "个体生存让力量占据上风。" },
+        { label: "让同伴一起分享", hint: "每个个体都少一点，但不会独自面对黑暗", result: "食物变少了，但种群互相靠近，形成了新的默契。", hp: 0, stats: { adaptability: 1, perception: 1 }, memory: "协作带来更稳定的生存方式。" }
+      ]}
+    ];
+
+    const state = { eventIndex: 0, hp: 3, maxHp: 3, stats: { strength: 0, perception: 0, adaptability: 0 }, memories: [] };
+    const names = { strength: "力量型猎手", perception: "敏捷型观察者", adaptability: "广适应生物" };
+    const descriptions = {
+      strength: "你多次选择正面承受危险、追逐食物或依靠爆发力逃生。你的种群开始相信，强壮的身体可以打开生存空间。",
+      perception: "你多次观察环境、等待时机并利用隐蔽处。你的种群开始相信，提前发现危险比战胜危险更重要。",
+      adaptability: "你多次接纳陌生食物或主动进入变化中的环境。你的种群开始相信，能够改变自己，才不会被环境淘汰。"
+    };
+
+    const $ = (id) => document.getElementById(id);
+    function render() {
+      const event = events[state.eventIndex];
+      $("eventCount").textContent = `事件 ${state.eventIndex + 1} / ${events.length}`;
+      $("eventTitle").textContent = event.title;
+      $("eventText").textContent = event.text;
+      $("sceneMood").textContent = event.mood;
+      $("choices").innerHTML = event.choices.map((choice, index) => `<button class="choice" data-choice="${index}"><span class="choice-number">${index + 1}</span><span><strong>${choice.label}</strong><small>${choice.hint}</small></span><span class="choice-arrow">›</span></button>`).join("");
+      document.querySelectorAll(".choice").forEach((button) => button.addEventListener("click", () => choose(Number(button.dataset.choice))));
+      ["strength", "perception", "adaptability"].forEach((key) => { $(key + "Value").textContent = state.stats[key]; $(key + "Bar").style.width = Math.min(100, 5 + state.stats[key] * 19) + "%"; });
+      $("health").innerHTML = Array.from({ length: state.maxHp }, (_, index) => `<span class="heart ${index >= state.hp ? "empty" : ""}"></span>`).join("");
+      const top = Object.entries(state.stats).sort((a, b) => b[1] - a[1])[0];
+      $("traitNote").textContent = top[1] === 0 ? "目前还没有明显倾向。每一次选择都会留下痕迹。" : `目前最明显的是“${top[0] === "strength" ? "力量" : top[0] === "perception" ? "感知" : "适应性"}”倾向。继续选择，方向会越来越清晰。`;
+      $("memoryText").textContent = state.memories.at(-1) || "这是你的第一次尝试。先活下来，再看看会变成什么。";
+    }
+    function choose(index) {
+      const choice = events[state.eventIndex].choices[index];
+      state.hp = Math.max(0, Math.min(state.maxHp, state.hp + choice.hp));
+      Object.entries(choice.stats).forEach(([key, value]) => state.stats[key] += value);
+      state.memories.push(choice.memory);
+      if (state.hp === 0 || state.eventIndex === events.length - 1) { showResult(state.hp === 0); return; }
+      state.eventIndex += 1;
+      render();
+    }
+    function showResult(extinct) {
+      $("gameView").classList.add("hidden");
+      $("resultView").classList.remove("hidden");
+      if (extinct) {
+        $("resultMark").textContent = "×";
+        $("resultTitle").textContent = "这条谱系消失了";
+        $("resultLead").textContent = "但这不是一次空白的失败。你已经留下了一组生存记忆，下一次可以换一种策略。";
+      } else {
+        const top = Object.entries(state.stats).sort((a, b) => b[1] - a[1])[0];
+        $("resultMark").textContent = "✦";
+        $("resultTitle").textContent = `你进化成了：${names[top[0]]}`;
+        $("resultLead").textContent = "这不是随机结果，而是你在五个环境选择中反复坚持的方向。";
+        $("resultReason").textContent = descriptions[top[0]];
+      }
+      $("resultStats").innerHTML = Object.entries(state.stats).map(([key, value]) => `<div class="result-stat"><b>${value}</b><small>${key === "strength" ? "力量" : key === "perception" ? "感知" : "适应性"}</small></div>`).join("");
+      if (extinct) $("resultReason").textContent = "你的活力耗尽了，但已经完成了一次完整的尝试。记住最后几次选择，下一局也许会走向另一条路线。";
+    }
+    function restart() {
+      state.eventIndex = 0; state.hp = 3; state.stats = { strength: 0, perception: 0, adaptability: 0 }; state.memories = [];
+      $("resultView").classList.add("hidden"); $("gameView").classList.remove("hidden"); render();
+    }
+    $("restartButton").addEventListener("click", restart);
+    $("backButton").addEventListener("click", () => { $("resultView").classList.add("hidden"); $("gameView").classList.remove("hidden"); render(); });
+    render();
+  </script>
+</body>
+</html>
