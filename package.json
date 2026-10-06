@@ -2,7 +2,10 @@
   "name": "taro_template",
   "version": "1.0.0",
   "private": true,
-  "description": "taro_template",
+  "description": "基于 Taro 的跨端生存进化小游戏",
+  "engines": {
+    "node": ">=20"
+  },
   "templateInfo": {
     "name": "react",
     "typescript": true,
@@ -27,7 +30,11 @@
     "dev:rn": "npm run build:rn -- --watch",
     "dev:qq": "npm run build:qq -- --watch",
     "dev:jd": "npm run build:jd -- --watch",
-    "dev:quickapp": "npm run build:quickapp -- --watch"
+    "dev:quickapp": "npm run build:quickapp -- --watch",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint \"src/**/*.{ts,tsx}\"",
+    "check": "npm run typecheck && npm run lint",
+    "validate": "npm run check && npm run build:h5"
   },
   "browserslist": [
     "last 3 versions",

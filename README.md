@@ -16,7 +16,7 @@
 
 ## 环境要求
 
-- Node.js：建议使用当前仍受支持的 LTS 版本
+- Node.js：20 LTS（项目通过 `.nvmrc` 和 `package.json` 约束）
 - npm：随 Node.js 一起安装
 - 微信小程序开发：需要安装微信开发者工具
 
@@ -44,6 +44,29 @@ npm install
 ```
 
 更新依赖后请检查并提交同步变化的 `package.json` 和 `package-lock.json`。
+
+## 代码检查
+
+提交代码前建议执行：
+
+```powershell
+npm run typecheck
+npm run lint
+```
+
+一次执行全部静态检查：
+
+```powershell
+npm run check
+```
+
+执行静态检查并构建 H5：
+
+```powershell
+npm run validate
+```
+
+项目的 GitHub Actions 会在推送或 Pull Request 到 `main` 时自动执行同样的检查和 H5 构建。
 
 ## 开发
 
@@ -129,7 +152,10 @@ MyLittleGame/
 │  ├─ app.config.ts        # 页面路由和 TabBar 配置
 │  ├─ app.tsx              # 应用入口
 │  └─ app.scss             # 全局样式
-├─ config/                 # Taro 构建配置
+├─ .github/workflows/      # GitHub Actions 持续集成
+├─ .editorconfig           # 编辑器统一规范
+├─ .eslintrc.cjs           # ESLint 代码检查规则
+├─ .nvmrc                  # Node.js 版本约束
 ├─ package.json            # npm 依赖和脚本
 ├─ package-lock.json       # npm 依赖锁文件
 ├─ tsconfig.json           # TypeScript 配置
