@@ -1,0 +1,22 @@
+@use '@/styles/variables.scss' as *;
+
+.page { min-height: 100vh; padding: 32rpx; }
+.header { margin-bottom: 32rpx; }
+.eyebrow { display: block; color: $color-primary; font-size: 22rpx; font-weight: $font-weight-bold; letter-spacing: 3rpx; }
+.title { display: block; margin-top: 8rpx; font-family: Georgia, 'PingFang SC', serif; font-size: 56rpx; line-height: 1.2; }
+.subtitle { display: block; margin-top: 8rpx; color: $color-text-tertiary; font-size: 24rpx; line-height: 1.6; }
+.empty { padding: 96rpx 32rpx; text-align: center; background: $color-bg-card; border: 1rpx solid $color-border; border-radius: $radius-md; box-shadow: $shadow-card; }
+.emptyMark { display: block; color: $color-primary; font-size: 72rpx; }
+.emptyTitle { display: block; margin-top: 24rpx; font-size: 32rpx; font-weight: $font-weight-semibold; }
+.emptyText { display: block; margin-top: 12rpx; color: $color-text-tertiary; font-size: 24rpx; line-height: 1.6; }
+.list { display: grid; gap: 24rpx; }
+.recordCard { padding: 28rpx; background: $color-bg-card; border: 1rpx solid $color-border; border-radius: $radius-md; box-shadow: $shadow-card; }
+.recordTop { display: flex; justify-content: space-between; align-items: center; gap: 16rpx; }
+.success, .failed { padding: 8rpx 16rpx; border-radius: $radius-round; font-size: 22rpx; }
+.success { color: $color-success; background: #e3f1e8; }
+.failed { color: $color-error; background: #f8e8e1; }
+.date { color: $color-text-tertiary; font-size: 22rpx; }
+.recordTitle { display: block; margin-top: 20rpx; font-size: 32rpx; font-weight: $font-weight-semibold; }
+.stats { display: flex; gap: 16rpx; margin-top: 16rpx; }
+.stat { color: $color-primary; font-size: 24rpx; }
+.memory { display: block; margin-top: 20rpx; padding-top: 16rpx; border-top: 1rpx solid $color-divider; color: $color-text-tertiary; font-size: 24rpx; line-height: 1.6; }

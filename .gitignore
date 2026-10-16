@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+
+# Build outputs and caches
+dist/
+build/
+library/
+temp/
+local/
+profiles/
+.swc/
+.pai/
+
+# Cocos generated/native files
+native/
+
+# IDE
+.vscode/
+.idea/
+
+# Logs and secrets
+*.log
+.env
+.env.*
+!.env.example
+.DS_Store
